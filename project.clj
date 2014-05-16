@@ -28,7 +28,7 @@
                                     :rules :cljs}]}
                    :aliases {"cleantest" ["do" "clean," "cljx" "once," "test,"
                                           "cljsbuild" "test"]
-                             "deploy" ["do" "clean," "cljx" "once," "deploy" "clojars"]}}}
+                             "deploy2" ["do" "clean," "cljx" "once," "deploy" "clojars"]}}}
 
   :cljsbuild {:test-commands {"node" ["node" :node-runner
                                       "this.literal_js_was_evaluated=true"
