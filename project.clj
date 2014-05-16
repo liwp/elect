@@ -1,4 +1,4 @@
-(defproject listora/elect "0.1.0-SNAPSHOT"
+(defproject listora/elect "0.1.0"
   :description "A Clojure library for selecting a subset of fields from composite data structures."
   :url "https://github.com/listora/elect"
   :license {:name "Eclipse Public License"
