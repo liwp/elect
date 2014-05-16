@@ -169,6 +169,17 @@ protocol to other types, or simply extend it to
 `java.lang.Object`. There is a technical reason why maps cannot be
 used as map keys, but that seems like a reasonable restriction.
 
+## Contributing
+
+The project uses [CLJX](https://github.com/lynaghk/cljx) to build
+Clojure and ClojureScript version fo the library from a single code
+base.
+
+Use the `cleantest` Leiningen alias to build and run tests against
+both versions:
+```
+lein cleantest
+```
 
 ## Inspiration
 
