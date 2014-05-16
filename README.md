@@ -2,10 +2,10 @@
 
 [![Build Status](https://travis-ci.org/listora/elect.png?branch=master)](https://travis-ci.org/listora/elect)
 
-A Clojure library for selecting a subset of fields from composite data
-structures (ie nested maps and vectors).
+A Clojure(Script) library for selecting a subset of fields from
+composite data structures (ie nested maps and vectors).
 
-Clojars: `[listora/elect "0.1.0"]`
+Clojars: `[listora/elect "0.2.0"]`
 
 --
 
