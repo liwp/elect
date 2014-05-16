@@ -1,4 +1,4 @@
-(defproject listora/elect "0.1.1-SNAPSHOT"
+(defproject listora/elect "0.2.0-SNAPSHOT"
   :description "A Clojure library for selecting a subset of fields from composite data structures."
   :url "https://github.com/listora/elect"
   :license {:name "Eclipse Public License"
@@ -13,7 +13,7 @@
                    :plugins [[com.keminglabs/cljx "0.3.2"]
                              [lein-cljsbuild "1.0.3"]
                              [com.cemerick/clojurescript.test "0.3.0"]]
-                   :hooks [cljx.hooks]
+
                    :cljx {:builds [{:source-paths ["src/cljx"]
                                     :output-path "target/classes"
                                     :rules :clj}
@@ -25,7 +25,10 @@
                                     :rules :clj}
                                    {:source-paths ["test/cljx"]
                                     :output-path "target/test-classes"
-                                    :rules :cljs}]}}}
+                                    :rules :cljs}]}
+                   :aliases {"cleantest" ["do" "clean," "cljx" "once," "test,"
+                                          "cljsbuild" "test"]
+                             "deploy" ["do" "clean," "cljx" "once," "deploy" "clojars"]}}}
 
   :cljsbuild {:test-commands {"node" ["node" :node-runner
                                       "this.literal_js_was_evaluated=true"
