@@ -4,6 +4,9 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
+  :source-paths ["src/cljx"]
+  :test-paths ["target/test-classes"]
+
   :profiles {:dev {:dependencies [[org.clojure/clojure "1.5.1"]]
                    :plugins [[com.keminglabs/cljx "0.3.2"]]
                    :hooks [cljx.hooks]
