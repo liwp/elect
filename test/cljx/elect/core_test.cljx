@@ -1,11 +1,16 @@
 (ns elect.core-test
-  (:require [clojure.test :refer :all]
-            [elect.core :refer :all]))
+  #+clj (:require [clojure.test :as t
+                   :refer (are is deftest testing)]
+                  [elect.core :refer [elect]])
+  #+cljs (:require-macros [cemerick.cljs.test
+                           :refer (are is deftest testing)])
+  #+cljs (:require [cemerick.cljs.test :as t]
+                   [elect.core :refer [elect]]))
 
 (deftest elect-pre-conditions
   (testing "elect"
     (testing "verifies `paths` is a vector"
-      (are [paths] (thrown? AssertionError (elect {} paths))
+      (are [paths] (thrown? #+clj Error #+cljs js/Error (elect {} paths))
            1
            "foo"
            :foo

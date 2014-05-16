@@ -5,10 +5,14 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :source-paths ["src/cljx"]
+  :jar-exclusions [#"\.cljx$"]
   :test-paths ["target/test-classes"]
 
-  :profiles {:dev {:dependencies [[org.clojure/clojure "1.5.1"]]
-                   :plugins [[com.keminglabs/cljx "0.3.2"]]
+  :profiles {:dev {:dependencies [[org.clojure/clojure "1.5.1"]
+                                  [org.clojure/clojurescript "0.0-2202"]]
+                   :plugins [[com.keminglabs/cljx "0.3.2"]
+                             [lein-cljsbuild "1.0.3"]
+                             [com.cemerick/clojurescript.test "0.3.0"]]
                    :hooks [cljx.hooks]
                    :cljx {:builds [{:source-paths ["src/cljx"]
                                     :output-path "target/classes"
@@ -23,4 +27,10 @@
                                     :output-path "target/test-classes"
                                     :rules :cljs}]}}}
 
-  :jar-exclusions [#"\.cljx$"])
+  :cljsbuild {:test-commands {"node" ["node" :node-runner
+                                      "this.literal_js_was_evaluated=true"
+                                      "target/testable.js"]}
+              :builds [{:source-paths ["target/classes" "target/test-classes"]
+                        :compiler {:output-to "target/testable.js"
+                                   :optimizations :advanced
+                                   :pretty-print true}}]})

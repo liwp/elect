@@ -11,29 +11,53 @@
   "A path specifies which parts of an object should be elected."
   (lookup-path [path obj] "Lookup the field identified by `path` from `obj`."))
 
+(defn- select-paths-for-map
+  [m paths]
+  (->> paths
+       (map #(lookup-path % m))
+       (into {})))
+
 (extend-protocol Electee
-  java.lang.Object
-  (select-paths [obj _]
-    obj)
-
-  clojure.lang.IPersistentMap
+  #+clj clojure.lang.IPersistentMap
+  #+cljs PersistentArrayMap
   (select-paths [m paths]
-    (->> paths
-         (map #(lookup-path % m))
-         (into {})))
+    (select-paths-for-map m paths))
 
-  clojure.lang.IPersistentVector
+  #+cljs PersistentHashMap
+  #+cljs (select-paths [m paths]
+           (select-paths-for-map m paths))
+
+  #+cljs PersistentTreeMap
+  #+cljs (select-paths [m paths]
+           (select-paths-for-map m paths))
+
+  #+clj clojure.lang.IPersistentVector
+  #+cljs PersistentVector
   (select-paths [v paths]
     (vec (map #(elect % paths) v))))
 
+(defn- lookup-paths-for-map
+  [paths m]
+  (map-kv #(elect (get m %1) %2) paths))
+
 (extend-protocol Path
-  clojure.lang.Keyword
+  #+clj clojure.lang.Keyword
+  #+cljs Keyword
   (lookup-path [path obj]
     (find obj path))
 
-  clojure.lang.IPersistentMap
-  (lookup-path [paths obj]
-    (map-kv #(elect (get obj %1) %2) paths)))
+  #+clj clojure.lang.IPersistentMap
+  #+cljs PersistentArrayMap
+  (lookup-path [paths m]
+    (lookup-paths-for-map paths m))
+
+  #+cljs PersistentHashMap
+  #+cljs (lookup-path [paths m]
+           (lookup-paths-for-map paths m))
+
+  #+cljs PersistentTreeMap
+  #+cljs (lookup-path [paths m]
+           (lookup-paths-for-map paths m)))
 
 (defn- map-kv
   "Map `f` to each element in the map `m` returning a new map. `f` is a two
@@ -61,4 +85,6 @@
   (elect {:foo [{:bar 1} {:bar 2}]} [{:foo [:bar]}]) ;=> {:foo [{:bar 1} {:bar 2}]}"
   [obj paths]
   {:pre [(vector? paths)]}
-  (select-paths obj paths))
+  (if ((some-fn map? vector?) obj)
+    (select-paths obj paths)
+    obj))
